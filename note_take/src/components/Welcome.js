@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react'
-import { signInWithEmailAndPassword , onAuthStateChanged} from "firebase/auth"
+import { signInWithEmailAndPassword , onAuthStateChanged, createUserWithEmailAndPassword} from "firebase/auth"
 
 import {auth} from '../firebase'
 import {useHistory, useNavigate} from "react-router-dom";
@@ -8,6 +8,12 @@ export default function Welcome() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
+  const [registerInformation, setRegisterInformation] = useState({
+    email: '',
+    confirmemail: '',
+    password: '',
+    confirmpassword: '',
+  })
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,10 +21,10 @@ export default function Welcome() {
       if(user){
         navigate('/Home');
       }
-    })
+    });
 
 
-  })
+  },[]);
 
 
   const handleEmailChange = (e) => {
@@ -38,7 +44,23 @@ export default function Welcome() {
    } ).catch((err)=> alert(err.message));
   }
 
-  const handleRegister = () => {};
+  const handleRegister = () => {
+    if(registerInformation.email !== registerInformation.confirmemail){
+      alert("Email address is not same")
+      return
+    }else if (registerInformation.password !== registerInformation.confirmpassword)
+    {
+      alert("Password is not same")
+      return
+    }
+
+    createUserWithEmailAndPassword(auth, registerInformation.email,registerInformation.password).then(()=>{
+      navigate("/Home");
+    })
+    .catch((err)=> alert(err.message));
+
+
+  };
 
   return (
     <div className='welcome'>
@@ -47,11 +69,15 @@ export default function Welcome() {
       {isRegistering ? (
         <>
         
-        <input type='email' placeholder='Email' />
-        <input type='email' placeholder='Confirm email' />
-        <input type='password' placeholder='Password'/>
+        <input type='email' placeholder='Email' value={registerInformation.email}
+         onChange={(e)=>{ setRegisterInformation({...registerInformation, email: e.target.value })}}/>
+        <input type='email' placeholder='Confirm email' value={registerInformation.confirmemail} 
+        onChange={(e)=>{ setRegisterInformation({...registerInformation, confirmemail: e.target.value })}}/>
+        <input type='password' placeholder='Password' value={registerInformation.password} 
+        onChange={(e)=>{ setRegisterInformation({...registerInformation, password: e.target.value })}}/>
         
-        <input type='password' placeholder='Confirm password'
+        <input type='password' placeholder='Confirm password' value={registerInformation.confirmpassword} 
+        onChange={(e)=>{ setRegisterInformation({...registerInformation, confirmpassword: e.target.value })}}
         
        />
         <button onClick={handleRegister}> Register</button>
