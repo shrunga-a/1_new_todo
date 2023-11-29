@@ -3,6 +3,8 @@ import { signInWithEmailAndPassword , onAuthStateChanged, createUserWithEmailAnd
 
 import {auth} from '../firebase'
 import {useHistory, useNavigate} from "react-router-dom";
+import './Welcome.css';
+
 export default function Welcome() {
 
   const [email, setEmail] = useState("");
@@ -64,7 +66,8 @@ export default function Welcome() {
 
   return (
     <div className='welcome'>
-      <h1>Write A note</h1>
+      <h1>Write A note Application</h1>
+      <h2> Login </h2>
       <div className='login-register-container'>
       {isRegistering ? (
         <>
@@ -89,8 +92,8 @@ export default function Welcome() {
 
       ) : (
         <>
-        <input type='email' onChange={handleEmailChange} valu={email}/>
-        <input type='password'onChange={handlePasswordChange} value={password}/>
+        <input type='email' placeholder='Email' onChange={handleEmailChange} valu={email}/>
+        <input type='password' placeholder='Password' onChange={handlePasswordChange} value={password}/>
         <button onClick={handleSignIn}> Sign In</button>
        <button onClick={()=> setIsRegistering(true)}> Creat new account</button>
       
@@ -101,19 +104,7 @@ export default function Welcome() {
 
 
       )
-        
-        
-        
-        
-        
-        
-    
-        
-        
-        
-
-
-
+      
       }
       
       </div>

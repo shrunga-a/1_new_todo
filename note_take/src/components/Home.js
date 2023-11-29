@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { uid } from 'uid';
 import { set, ref, onValue, remove, update } from 'firebase/database';
 
+
 export default function Home() {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
